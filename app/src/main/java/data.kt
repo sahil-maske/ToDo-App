@@ -1,8 +1,8 @@
-import kotlinx.serialization.descriptors.SerialDescriptor
+package com.sahil.todoapp
 
 data class Task (
-    val id :Int = 1,
-    val title : String = "",
-    val description: String = "",
-    val isComplete : Boolean = false
+    var id :Int = 1,
+    var title : String = "",
+    var description: String = "",
+    var isComplete : Boolean = false
 )

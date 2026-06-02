@@ -1,7 +1,8 @@
 package com.sahil.todoapp
 
-import Task
+import androidx.compose.foundation.combinedClickable
 import android.os.Bundle
+import androidx.compose.material3.AlertDialog
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,19 +33,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.sahil.todoapp.ui.theme.ToDoAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -106,6 +111,12 @@ fun ScrollContent(innerPadding: PaddingValues) {
     val title = rememberTextFieldState()
     val description = rememberTextFieldState()
     val taskList = remember { mutableStateListOf<Task>() }
+    var showEditDialog by remember { mutableStateOf(false) }
+    var selectTask by remember { mutableStateOf<Task?>(null) }
+
+    var editTitle by remember { mutableStateOf("") }
+    var editDescription by remember { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier
@@ -164,11 +175,25 @@ fun ScrollContent(innerPadding: PaddingValues) {
         ) {
             items(taskList) { task ->
 
+
+
+                //   CARD OF THE TODO
                 Card(
                      modifier = Modifier
                          .fillMaxWidth()
                          .padding(8.dp)
-                         .background(Color.Cyan)
+
+                         .combinedClickable(
+                             onClick = { },
+                             onLongClick = {
+                                 selectTask = task
+
+                                 editTitle = task.title
+                                 editDescription = task.description
+
+                                 showEditDialog = true
+                             }
+                         )
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp)
@@ -228,6 +253,57 @@ fun ScrollContent(innerPadding: PaddingValues) {
                     }
                 }
             }
+        }
+        if (showEditDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showEditDialog = false
+                },
+                title = {
+                    Text("Edit Task")
+                },
+                text = {
+                    Column {
+                        OutlinedTextField(
+                            value = editTitle,
+                            onValueChange = { editTitle = it },
+                            label = { Text("Title") }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        OutlinedTextField(
+                            value = editDescription,
+                            onValueChange = { editDescription = it },
+                            label = { Text("Description") }
+                        )
+                    }
+                },
+                confirmButton = {
+                    OutlinedButton(
+                        onClick = {
+                            val task = selectTask
+                            if (task != null) {
+                                val index = taskList.indexOf(task)
+                                if (index != -1) {
+                                    taskList[index] = task.copy(
+                                        title = editTitle,
+                                        description = editDescription
+                                    )
+                                }
+                            }
+                            showEditDialog = false
+                        }
+                    ) {
+                        Text("Save")
+                    }
+                },
+                dismissButton = {
+                    OutlinedButton(
+                        onClick = { showEditDialog = false }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            )
         }
     }
 }
