@@ -1,5 +1,6 @@
 package com.sahil.todoapp
 
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.foundation.combinedClickable
 import android.os.Bundle
 import androidx.compose.material3.AlertDialog
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -73,28 +73,104 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TodoScreen(name: String, modifier: Modifier = Modifier) {
 
-Scaffold(
-    topBar = {
-        TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-            ),
-            title = {
-                Text(
-                    text = " ToDo App",
-                    fontSize = 28.sp,
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.W900
-                )
 
+    // This for FAC inside for this function
+    var showAddTaskDialog by remember {
+        mutableStateOf(false) }
+
+
+    // This for the add to New task
+    val context = LocalContext.current
+    val title = rememberTextFieldState()
+    val description = rememberTextFieldState()
+    val taskList = remember { mutableStateListOf<Task>() }
+
+
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        text = " ToDo App",
+                        fontSize = 28.sp,
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.W900
+                    )
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    showAddTaskDialog = true
+                },
+            ) {
+                Text("+")
+            }
+        }
+    ) { innerPadding ->
+        ScrollContent(innerPadding, taskList)
+    }
+
+    if (showAddTaskDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showAddTaskDialog = false
+            },
+            title = {
+                Text(text = "Add New Task")
+            },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        state = title,
+                        label = { Text("Add Task Title !") }
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    OutlinedTextField(
+                        state = description,
+                        label = { Text("Task Description") }
+                    )
+                }
+            },
+            confirmButton = {
+                OutlinedButton(onClick = {
+                    if (title.text.isBlank() || description.text.isBlank()) {
+                        Toast.makeText(
+                            context, "Fields cannot be Empty", Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        val newTask = Task(
+                            id = taskList.size + 1,
+                            title = title.text.toString(),
+                            description = description.text.toString(),
+                            isComplete = false
+                        )
+                        taskList.add(newTask)
+
+                        title.clearText()
+                        description.clearText()
+                        showAddTaskDialog = false
+                    }
+                }) {
+                    Text(text = "ADD TASK")
+                }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = {
+                    showAddTaskDialog = false
+                }) {
+                    Text(text = "Cancel")
+                }
             }
         )
-    },
-) {
-    innerPadding->
-    ScrollContent(innerPadding)
-}
+    }
 }
 
 @Preview(showBackground = true)
@@ -106,11 +182,7 @@ fun GreetingPreview() {
 }
 
 @Composable
-fun ScrollContent(innerPadding: PaddingValues) {
-    val context = LocalContext.current
-    val title = rememberTextFieldState()
-    val description = rememberTextFieldState()
-    val taskList = remember { mutableStateListOf<Task>() }
+fun ScrollContent(innerPadding: PaddingValues, taskList: MutableList<Task>) {
     var showEditDialog by remember { mutableStateOf(false) }
     var selectTask by remember { mutableStateOf<Task?>(null) }
 
@@ -126,42 +198,42 @@ fun ScrollContent(innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        OutlinedTextField(
-            state = title,
-            label = { Text("Add Task Title !") }
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-
-        OutlinedTextField(
-            state = description,
-            label = { Text("Task Description") }
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-
-        OutlinedButton(onClick = {
-
-            if (title.text.isBlank() || description.text.isBlank()){
-                Toast.makeText(
-                    context,"Fields cannot be Empty", Toast.LENGTH_SHORT
-                ).show()
-            }else {
-
-                val newTask = Task(
-                    id = taskList.size + 1,
-                    title = title.text.toString(),
-                    description = description.text.toString(),
-                    isComplete = false
-                )
-                taskList.add(newTask)
-
-                title.clearText()
-                description.clearText()
-
-            }
-
-        }) {
-            Text(text = "ADD TASK")
-        }
+//        OutlinedTextField(
+//            state = title,
+//            label = { Text("Add Task Title !") }
+//        )
+//        Spacer(modifier = Modifier.height(12.dp))
+//
+//        OutlinedTextField(
+//            state = description,
+//            label = { Text("Task Description") }
+//        )
+//        Spacer(modifier = Modifier.height(12.dp))
+//
+//        OutlinedButton(onClick = {
+//
+//            if (title.text.isBlank() || description.text.isBlank()){
+//                Toast.makeText(
+//                    context,"Fields cannot be Empty", Toast.LENGTH_SHORT
+//                ).show()
+//            }else {
+//
+//                val newTask = Task(
+//                    id = taskList.size + 1,
+//                    title = title.text.toString(),
+//                    description = description.text.toString(),
+//                    isComplete = false
+//                )
+//                taskList.add(newTask)
+//
+//                title.clearText()
+//                description.clearText()
+//
+//            }
+//
+//        }) {
+//            Text(text = "ADD TASK")
+//        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -306,4 +378,5 @@ fun ScrollContent(innerPadding: PaddingValues) {
             )
         }
     }
+
 }
