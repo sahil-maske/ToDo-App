@@ -48,11 +48,11 @@ fun TaskCard(
         ) {
             Text(
                 text = task.title,
-//                fontSize = 21.sp,
-//                fontFamily = FontFamily.Serif,
-//                fontWeight = FontWeight.ExtraBold,
-//                color = MaterialTheme.colorScheme.primary
-                style = MaterialTheme.typography.titleMedium
+                fontSize = 20.sp,
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.primary
+//                style = MaterialTheme.typography.titleMedium
             )
             
             Spacer(modifier = Modifier.height(4.dp))
