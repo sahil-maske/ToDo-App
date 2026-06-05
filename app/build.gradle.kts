@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation("org.json:json:20200518")
+    implementation("androidx.activity:activity-compose:1.9.0") // or latest
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)

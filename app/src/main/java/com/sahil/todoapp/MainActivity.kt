@@ -1,5 +1,8 @@
 package com.sahil.todoapp
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.foundation.combinedClickable
 import android.os.Bundle
@@ -98,6 +101,7 @@ fun TodoScreen(name: String, modifier: Modifier = Modifier) {
 
     Scaffold(
         modifier = modifier,
+        contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -108,8 +112,9 @@ fun TodoScreen(name: String, modifier: Modifier = Modifier) {
                     Text(
                         text = " ToDo App",
                         fontSize = 22.sp,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.Bold
+//                        fontFamily = FontFamily.Serif,
+//                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleLarge
                     )
                 }
             )
