@@ -242,82 +242,96 @@ fun ScrollContent(innerPadding: PaddingValues, taskList: MutableList<Task>) {
                 items(taskList) { task ->
 
 
-                    //   CARD OF THE TODO
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
 
-                            .combinedClickable(
-                                onClick = { },
-                                onLongClick = {
-                                    selectTask = task
 
-                                    editTitle = task.title
-                                    editDescription = task.description
-
-                                    showEditDialog = true
-                                }
-                            )
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            Text(
-                                text = task.title,
-                                fontSize = 21.sp,
-                                fontFamily = FontFamily.Serif,
-                                fontWeight = FontWeight.ExtraBold
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Text(
-                                text = task.description,
-                                fontSize = 14.5.sp,
-                                fontFamily = FontFamily.Monospace,
-                                fontWeight = FontWeight.SemiBold
-
-                            )
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Start,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                OutlinedButton(
-                                    onClick = {
-                                        taskList.remove(task)
-                                    },
-                                    colors = ButtonDefaults.outlinedButtonColors(
-                                        containerColor = Color.Red,
-                                        contentColor = Color.White
-                                    )
-                                ) {
-                                    Text("Delete")
-                                }
-
-                                Spacer(modifier = Modifier.width(14.dp))
-                                OutlinedButton(
-                                    onClick = {
-                                        val index = taskList.indexOf(task)
-                                        if (index != -1) {
-                                            taskList[index] =
-                                                task.copy(isComplete = !task.isComplete)
-                                        }
-                                    },
-                                    colors = ButtonDefaults.outlinedButtonColors(
-                                        containerColor = Color.Blue,
-                                        contentColor = Color.White
-                                    )
-                                ) {
-                                    Text(text = if (task.isComplete) "Complete" else "Incomplete")
-                                }
-
+                    TaskCard(
+                        task = task,
+                        onDelete = { taskList.remove(task) },
+                        onStatusChange = {
+                            val index = taskList.indexOf(task)
+                            if (index != -1) {
+                                taskList[index] = task.copy(isComplete = !task.isComplete)
                             }
-
-
                         }
-                    }
+                    )
+
+
+                    //   CARD OF THE TODO
+//                    Card(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(8.dp)
+//
+//                            .combinedClickable(
+//                                onClick = { },
+//                                onLongClick = {
+//                                    selectTask = task
+//
+//                                    editTitle = task.title
+//                                    editDescription = task.description
+//
+//                                    showEditDialog = true
+//                                }
+//                            )
+//                    ) {
+//                        Column(
+//                            modifier = Modifier.padding(16.dp)
+//                        ) {
+//                            Text(
+//                                text = task.title,
+//                                fontSize = 21.sp,
+//                                fontFamily = FontFamily.Serif,
+//                                fontWeight = FontWeight.ExtraBold
+//                            )
+//                            Spacer(modifier = Modifier.height(4.dp))
+//
+//                            Text(
+//                                text = task.description,
+//                                fontSize = 14.5.sp,
+//                                fontFamily = FontFamily.Monospace,
+//                                fontWeight = FontWeight.SemiBold
+//
+//                            )
+//                            Spacer(modifier = Modifier.height(6.dp))
+//                            Row(
+//                                modifier = Modifier.fillMaxWidth(),
+//                                horizontalArrangement = Arrangement.Start,
+//                                verticalAlignment = Alignment.CenterVertically
+//                            ) {
+//                                OutlinedButton(
+//                                    onClick = {
+//                                        taskList.remove(task)
+//                                    },
+//                                    colors = ButtonDefaults.outlinedButtonColors(
+//                                        containerColor = Color.Red,
+//                                        contentColor = Color.White
+//                                    )
+//                                ) {
+//                                    Text("Delete")
+//                                }
+//
+//                                Spacer(modifier = Modifier.width(14.dp))
+//                                OutlinedButton(
+//                                    onClick = {
+//                                        val index = taskList.indexOf(task)
+//                                        if (index != -1) {
+//                                            taskList[index] =
+//                                                task.copy(isComplete = !task.isComplete)
+//                                        }
+//                                    },
+//                                    colors = ButtonDefaults.outlinedButtonColors(
+//                                        containerColor = Color.Blue,
+//                                        contentColor = Color.White
+//                                    )
+//                                ) {
+//                                    Text(text = if (task.isComplete) "Complete" else "Incomplete")
+//                                }
+//
+//                            }
+//
+//
+//                        }
+//                    }
                 }
             }
         }
