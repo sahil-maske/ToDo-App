@@ -95,7 +95,9 @@ fun TodoScreen(name: String, modifier: Modifier = Modifier) {
     val db = remember {   //    Connecting UI to the Database
         Room.databaseBuilder(
             context, AppDatabase::class.java,"todo_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     val dao=db.taskDao()
@@ -268,7 +270,7 @@ fun ScrollContent(
 
 
                     TaskEntityCard(
-                        TaskEntity = TaskEntity,
+                        task = TaskEntity,
                         onDelete = {
 
                             scope.launch {

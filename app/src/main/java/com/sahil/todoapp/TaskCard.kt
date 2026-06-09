@@ -25,10 +25,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sahil.todoapp.data.entity.TaskEntity
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun TaskEntityCard(
-    TaskEntity: TaskEntity,
+    task: TaskEntity,
     onDelete: () -> Unit,
     onStatusChange: () -> Unit,
     onLongClick:() -> Unit
@@ -56,7 +59,7 @@ fun TaskEntityCard(
         ) {
 
             Text(
-                text = TaskEntity.title,
+                text = task.title,
                 fontSize = 20.sp,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.ExtraBold,
@@ -67,7 +70,7 @@ fun TaskEntityCard(
             Spacer(modifier = Modifier.height(4.dp))
             
             Text(
-                text = TaskEntity.description,
+                text = task.description,
                 fontSize = 15.sp,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Normal,
@@ -81,6 +84,20 @@ fun TaskEntityCard(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
+                val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
+                val dateString = sdf.format(Date(task.createdAt))
+
+                Text(
+                    text = dateString,
+                    modifier = Modifier.padding(end=15.dp),
+                    fontSize = 10.sp,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+
+                )
+
                 OutlinedButton(
                     onClick = onDelete,
                     colors = ButtonDefaults.outlinedButtonColors(
@@ -98,13 +115,14 @@ fun TaskEntityCard(
 
                 OutlinedButton(
                     onClick = onStatusChange,
+                    modifier = Modifier.width(120.dp),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = if (TaskEntity.isComplete) Color(0xFF4CAF50) else Color(0xFF2196F3),
+                        containerColor = if (task.isComplete) Color(0xFF4CAF50) else Color(0xFF2196F3),
                         contentColor = Color.White
                     ),
                     border = null
                 ) {
-                    Text(text = if (TaskEntity.isComplete) "Completed" else "Mark Done")
+                    Text(text = if (task.isComplete) "Completed" else "Mark Done")
                 }
             }
         }
@@ -116,7 +134,7 @@ fun TaskEntityCard(
 fun TaskEntityCardPreview() {
     MaterialTheme {
         TaskEntityCard(
-            TaskEntity = TaskEntity(
+            task = TaskEntity(
                 id = 1,
                 title = "Sample Task",
                 description = "This is a sample description for the task card preview.",

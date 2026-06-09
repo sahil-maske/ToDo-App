@@ -7,7 +7,7 @@ import com.sahil.todoapp.data.entity.TaskEntity
 
 @Database(
     entities = [TaskEntity::class],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
