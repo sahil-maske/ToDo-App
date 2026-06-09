@@ -1,31 +1,31 @@
 # 📝 ToDo App
 
-A simple and modern Task Management application built with **Jetpack Compose** and **Material 3**. The app allows users to create, manage, and track their daily tasks with a clean and responsive UI.
+A simple and modern TaskEntity Management application built with **Jetpack Compose** and **Material 3**. The app allows users to create, manage, and track their daily TaskEntitys with a clean and responsive UI.
 
 ## ✨ Features
 
-### 📌 Task Creation
+### 📌 TaskEntity Creation
 
-* Add new tasks with a title and description.
-* Input validation prevents empty tasks from being added.
+* Add new TaskEntitys with a title and description.
+* Input validation prevents empty TaskEntitys from being added.
 
-### 📋 Task List
+### 📋 TaskEntity List
 
-* Display all tasks in a scrollable list using `LazyColumn`.
-* Each task is shown inside a Material 3 Card.
+* Display all TaskEntitys in a scrollable list using `LazyColumn`.
+* Each TaskEntity is shown inside a Material 3 Card.
 
-### ✅ Task Status Management
+### ✅ TaskEntity Status Management
 
-* Mark tasks as Complete or Incomplete.
+* Mark TaskEntitys as Complete or Incomplete.
 * Status updates instantly using Compose state management.
 
-### 🗑️ Delete Tasks
+### 🗑️ Delete TaskEntitys
 
-* Remove unwanted tasks with a single tap.
+* Remove unwanted TaskEntitys with a single tap.
 
-### ✍️ Edit Tasks (In Progress)
+### ✍️ Edit TaskEntitys (In Progress)
 
-* Long-press a task card to start editing.
+* Long-press a TaskEntity card to start editing.
 * Edit dialog implementation is currently under development.
 
 ### 🎨 Modern UI
@@ -55,8 +55,8 @@ A simple and modern Task Management application built with **Jetpack Compose** a
 ## 🚀 Future Improvements
 
 * Room Database Persistence
-* Search Tasks
-* Task Categories
+* Search TaskEntitys
+* TaskEntity Categories
 * Due Dates
 * Statistics Dashboard
 * Dark Mode Support

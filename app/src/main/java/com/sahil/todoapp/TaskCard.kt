@@ -1,5 +1,6 @@
 package com.sahil.todoapp
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,16 +19,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sahil.todoapp.data.entity.TaskEntity
 
 @Composable
-fun TaskCard(
-    task: Task,
+fun TaskEntityCard(
+    TaskEntity: TaskEntity,
     onDelete: () -> Unit,
-    onStatusChange: () -> Unit
+    onStatusChange: () -> Unit,
+    onLongClick:() -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -43,11 +47,16 @@ fun TaskCard(
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(8.dp,12.dp)
                 .fillMaxWidth()
+                .combinedClickable(
+                    onClick = {},
+                   onLongClick = onLongClick
+                )
         ) {
+
             Text(
-                text = task.title,
+                text = TaskEntity.title,
                 fontSize = 20.sp,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.ExtraBold,
@@ -58,7 +67,7 @@ fun TaskCard(
             Spacer(modifier = Modifier.height(4.dp))
             
             Text(
-                text = task.description,
+                text = TaskEntity.description,
                 fontSize = 15.sp,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Normal,
@@ -90,14 +99,32 @@ fun TaskCard(
                 OutlinedButton(
                     onClick = onStatusChange,
                     colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = if (task.isComplete) Color(0xFF4CAF50) else Color(0xFF2196F3),
+                        containerColor = if (TaskEntity.isComplete) Color(0xFF4CAF50) else Color(0xFF2196F3),
                         contentColor = Color.White
                     ),
                     border = null
                 ) {
-                    Text(text = if (task.isComplete) "Completed" else "Mark Done")
+                    Text(text = if (TaskEntity.isComplete) "Completed" else "Mark Done")
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TaskEntityCardPreview() {
+    MaterialTheme {
+        TaskEntityCard(
+            TaskEntity = TaskEntity(
+                id = 1,
+                title = "Sample Task",
+                description = "This is a sample description for the task card preview.",
+                isComplete = false
+            ),
+            onDelete = {},
+            onStatusChange = {},
+            onLongClick = {}
+        )
     }
 }
