@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.FloatingActionButton
 import android.os.Bundle
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -27,15 +28,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,7 +50,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.room.Room
@@ -65,11 +72,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ToDoAppTheme {
+            var isDarkMode by remember { mutableStateOf(false) }
+            ToDoAppTheme(darkTheme = isDarkMode) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     TodoScreen(
                         name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        isDarkMode = isDarkMode,
+                        onThemeChange = { isDarkMode = !isDarkMode }
                     )
                 }
             }
@@ -79,7 +89,12 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodoScreen(name: String, modifier: Modifier = Modifier) {
+fun TodoScreen(
+    name: String,
+    modifier: Modifier = Modifier,
+    isDarkMode: Boolean,
+    onThemeChange: () -> Unit
+) {
 
 
     // This for FAC inside for this function
@@ -119,7 +134,7 @@ fun TodoScreen(name: String, modifier: Modifier = Modifier) {
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
-            CenterAlignedTopAppBar(
+            TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary,
@@ -128,10 +143,26 @@ fun TodoScreen(name: String, modifier: Modifier = Modifier) {
                     Text(
                         text = " ToDo App",
                         fontSize = 22.sp,
-//                        fontFamily = FontFamily.Serif,
-//                        fontWeight = FontWeight.Bold,
+                        modifier= Modifier.padding(end = 15.dp),
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.ExtraBold,
                         style = MaterialTheme.typography.titleLarge
                     )
+                },
+                actions = {
+                    IconButton(
+                        onClick = onThemeChange
+                    ) {
+                        Icon(
+
+                            imageVector = if(isDarkMode)
+                                Icons.Default.LightMode
+                                        else
+                                            Icons.Default.DarkMode,
+                            contentDescription = "Theme",
+
+                        )
+                    }
                 }
             )
         },
@@ -215,7 +246,11 @@ fun TodoScreen(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun TodoScreenPreview() {
     ToDoAppTheme {
-        TodoScreen("Android")
+        TodoScreen(
+            name = "Android",
+            isDarkMode = false,
+            onThemeChange = {}
+        )
     }
 }
 

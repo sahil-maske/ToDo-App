@@ -39,7 +39,7 @@ fun TaskEntityCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 12.dp),
+            .padding(vertical = 2.dp, horizontal = 12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
 
         colors = CardDefaults.cardColors(
